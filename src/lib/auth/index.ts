@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { authConfig } from "./auth.config";
 import { loginSchema } from "@/lib/validation/auth";
-import { verifyPassword } from "@/lib/services/users";
+import { ensureBootstrapAdmin, verifyPassword } from "@/lib/services/users";
 import { checkRateLimit } from "@/lib/security/rate-limit";
 import { hashIdentifier } from "@/lib/security/request";
 import { logger } from "@/lib/logger";
@@ -33,6 +33,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
+        await ensureBootstrapAdmin();
         const user = await verifyPassword(parsed.data.email, parsed.data.password);
         if (!user) return null;
         return { id: user.id, name: user.name, email: user.email, role: user.role };

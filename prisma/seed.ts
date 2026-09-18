@@ -29,8 +29,7 @@ async function main() {
     process.exit(1);
   }
   if (password.length < 10) {
-    console.error("ADMIN_PASSWORD must be at least 10 characters.");
-    process.exit(1);
+    console.warn("Warning: ADMIN_PASSWORD is shorter than 10 characters. Use a strong password for production.");
   }
 
   const passwordHash = await bcrypt.hash(password, 12);

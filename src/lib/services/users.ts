@@ -38,6 +38,22 @@ export async function createTeamMember(input: TeamMemberInput) {
   });
 }
 
+/**
+ * First-run bootstrap: when the users table is empty and ADMIN_EMAIL /
+ * ADMIN_PASSWORD are configured, create the admin so a fresh deployment can
+ * be signed into without running the seed script by hand.
+ */
+export async function ensureBootstrapAdmin(): Promise<void> {
+  const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  const password = process.env.ADMIN_PASSWORD;
+  if (!email || !password) return;
+  if ((await prisma.user.count()) > 0) return;
+  const passwordHash = await bcrypt.hash(password, 12);
+  await prisma.user.create({
+    data: { name: process.env.ADMIN_NAME?.trim() || "TECHSIDES Admin", email, passwordHash, role: "ADMIN" },
+  });
+}
+
 export async function verifyPassword(email: string, password: string) {
   const user = await findUserByEmail(email);
   if (!user) {

@@ -22,7 +22,7 @@ export async function loginAction(_prev: LoginState, formData: FormData): Promis
     password: formData.get("password"),
   });
   if (!parsed.success) {
-    return { error: "Enter a valid email address and a password of at least 8 characters.", email };
+    return { error: "Enter your username (or email) and password.", email };
   }
 
   try {

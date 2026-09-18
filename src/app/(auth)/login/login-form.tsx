@@ -14,8 +14,8 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
     <form action={formAction} className="space-y-6">
       {state.error ? <FormMessage tone="error">{state.error}</FormMessage> : null}
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
-      <FormField label="Email" name="email" required>
-        <Input type="email" autoComplete="email" placeholder="you@techsides.com" defaultValue={state.email ?? ""} autoFocus />
+      <FormField label="Username or email" name="email" required>
+        <Input type="text" autoComplete="username" placeholder="admin" defaultValue={state.email ?? ""} autoFocus />
       </FormField>
       <FormField label="Password" name="password" required>
         <Input type="password" autoComplete="current-password" placeholder="••••••••••" />

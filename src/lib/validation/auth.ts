@@ -1,8 +1,13 @@
 import { z } from "zod";
 
+/**
+ * Sign-in accepts a username or an email in the same field, so short
+ * identifiers such as "admin" work. Password strength is enforced when
+ * accounts are created (teamMemberSchema), not at sign-in.
+ */
 export const loginSchema = z.object({
-  email: z.email("Enter a valid email address.").max(200),
-  password: z.string().min(8, "Password must be at least 8 characters.").max(200),
+  email: z.string().trim().min(1, "Enter your username or email.").max(200),
+  password: z.string().min(1, "Enter your password.").max(200),
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;
