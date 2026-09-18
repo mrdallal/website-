@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200" role="img" aria-label="Placeholder composition">
+  <rect width="1600" height="1200" fill="#0A0A0A"/>
+  <g stroke="#F4F2EC" stroke-opacity="0.12" stroke-width="2">
+    <path d="M0 300H1600M0 600H1600M0 900H1600M400 0V1200M800 0V1200M1200 0V1200"/>
+  </g>
+  <rect x="160" y="160" width="880" height="620" fill="#F4F2EC"/>
+  <rect x="160" y="160" width="880" height="72" fill="#0A0A0A" fill-opacity="0.08"/>
+  <rect x="220" y="300" width="520" height="56" fill="#0A0A0A"/>
+  <rect x="220" y="390" width="640" height="18" fill="#0A0A0A" fill-opacity="0.35"/>
+  <rect x="220" y="430" width="560" height="18" fill="#0A0A0A" fill-opacity="0.35"/>
+  <rect x="220" y="540" width="240" height="72" fill="#D4F796"/>
+  <rect x="1000" y="680" width="440" height="360" fill="#D4F796"/>
+  <text x="1040" y="780" font-family="ui-monospace, Menlo, monospace" font-size="34" fill="#0A0A0A" letter-spacing="6">LEAD SYSTEM</text>
+  <text x="1040" y="980" font-family="Helvetica, Arial, sans-serif" font-size="150" font-weight="800" fill="#0A0A0A" letter-spacing="-8">01</text>
+  <text x="160" y="1080" font-family="ui-monospace, Menlo, monospace" font-size="30" fill="#F4F2EC" fill-opacity="0.6" letter-spacing="8">PLACEHOLDER IMAGE — REPLACE</text>
+</svg>
