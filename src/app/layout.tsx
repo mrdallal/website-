@@ -3,6 +3,7 @@ import { JetBrains_Mono, Manrope } from "next/font/google";
 import { siteConfig } from "@/content/site";
 import { Toaster } from "@/components/ui/toaster";
 import { AnalyticsScripts } from "@/components/analytics/analytics-scripts";
+import { MotionProvider } from "@/components/motion/motion-provider";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -54,10 +55,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${manrope.variable} ${mono.variable} h-full`}>
+    <html lang="en" className={`${manrope.variable} ${mono.variable} h-full`} data-scroll-behavior="smooth">
       {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject attributes on <body> before hydration */}
       <body className="flex min-h-full flex-col" suppressHydrationWarning>
-        {children}
+        <MotionProvider>{children}</MotionProvider>
         <Toaster />
         <AnalyticsScripts />
       </body>

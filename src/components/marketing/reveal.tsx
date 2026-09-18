@@ -1,53 +1,41 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { motion, type HTMLMotionProps } from "motion/react";
 
-interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
+export const luxuryEase = [0.16, 1, 0.3, 1] as const;
+
+type Tag = "div" | "li" | "article" | "section" | "figure" | "span" | "p";
+
+interface RevealProps extends Omit<HTMLMotionProps<"div">, "children"> {
   /** Delay in ms, useful for staggering siblings */
   delay?: number;
-  as?: "div" | "li" | "article" | "section" | "figure";
+  as?: Tag;
+  /** Animate on mount instead of when scrolled into view */
+  immediate?: boolean;
+  /** Vertical travel in px */
+  distance?: number;
+  children?: React.ReactNode;
 }
 
 /**
- * Progressive scroll reveal. Content is visible without JS (see globals.css)
- * and animates in once when it enters the viewport.
+ * Scroll (or mount) reveal built on Framer Motion: a slow, decelerating rise
+ * with a fade. Reduced-motion preferences are honoured globally through
+ * MotionConfig (see MotionProvider), which keeps server and client markup identical.
  */
-export function Reveal({ delay = 0, as: Comp = "div", className, style, children, ...props }: RevealProps) {
-  const ref = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (typeof IntersectionObserver === "undefined") {
-      el.classList.add("is-visible");
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            el.classList.add("is-visible");
-            observer.disconnect();
-          }
-        }
-      },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.1 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+export function Reveal({ delay = 0, as = "div", immediate = false, distance = 28, children, ...props }: RevealProps) {
+  const Component = (motion as unknown as Record<Tag, typeof motion.div>)[as];
+  const visible = { opacity: 1, y: 0, filter: "blur(0px)" };
+  const hidden = { opacity: 0, y: distance, filter: "blur(6px)" };
 
   return (
-    <Comp
-      // @ts-expect-error -- ref type differs per element, all are HTMLElement
-      ref={ref}
-      data-reveal=""
-      className={cn(className)}
-      style={{ ...style, ["--reveal-delay" as string]: `${delay}ms` }}
+    <Component
+      initial={hidden}
+      {...(immediate ? { animate: visible } : { whileInView: visible, viewport: { once: true, margin: "0px 0px -12% 0px" } })}
+      transition={{ duration: 1, ease: luxuryEase, delay: delay / 1000 }}
       {...props}
     >
       {children}
-    </Comp>
+    </Component>
   );
 }

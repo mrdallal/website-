@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/marketing/navbar";
 import { Footer } from "@/components/marketing/footer";
+import { ScrollProgress } from "@/components/motion/scroll-progress";
 
 export default function MarketingLayout({ children }: LayoutProps<"/">) {
   return (
@@ -10,6 +11,7 @@ export default function MarketingLayout({ children }: LayoutProps<"/">) {
       >
         Skip to content
       </a>
+      <ScrollProgress />
       <Navbar />
       <main id="main" className="flex-1">
         {children}

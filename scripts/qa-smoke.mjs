@@ -22,7 +22,7 @@ const width = Number(process.argv[3] ?? 1440);
 const errors = [];
 
 const browser = await chromium.launch({ channel: "chrome", headless: true });
-const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: process.env.QA_REDUCED === "0" ? "no-preference" : "reduce" });
 const page = await context.newPage();
 page.on("console", (msg) => {
   if (msg.type() === "error" || msg.type() === "warning") errors.push(`[console ${msg.type()}] ${msg.text()}`);
@@ -37,6 +37,9 @@ console.log("Signed in ->", page.url());
 
 for (const p of pages) {
   await page.goto(`${base}${p}`, { waitUntil: "networkidle" });
+  // Scroll through so in-view reveals fire, then return to top before capturing.
+  await page.evaluate(async () => { document.documentElement.style.scrollBehavior = "auto"; const h = document.documentElement.scrollHeight; for (let y = 0; y < h; y += 400) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 60)); } window.scrollTo(0, 0); });
+  await page.waitForTimeout(1400);
   const title = await page.title();
   const status = await page.evaluate(() => document.body.innerText.includes("Application error") ? "APP ERROR" : "ok");
   const name = p.replace(/[^a-z0-9]+/gi, "_").replace(/^_|_$/g, "") || "root";

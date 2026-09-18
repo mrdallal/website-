@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { CaseStudy } from "@/types/content";
 import { Badge } from "@/components/ui/badge";
+import { ImageReveal } from "@/components/motion/image-reveal";
 import { cn } from "@/lib/utils";
 
 interface ProjectCardProps {
@@ -21,24 +22,26 @@ export function ProjectCard({ project, className, emphasis = false, priority = f
     <article className={cn("group flex flex-col", className)}>
       <Link
         href={href}
-        className="relative block overflow-hidden border border-bone/15 bg-ink focus-visible:outline-2 focus-visible:outline-offset-4"
+        className="relative block overflow-hidden border border-bone/10 bg-ink focus-visible:outline-2 focus-visible:outline-offset-4"
         aria-label={`${project.title}${project.placeholder ? " (placeholder)" : ""}`}
       >
         <div className={cn("relative w-full", emphasis ? "aspect-[4/3] lg:aspect-[5/4]" : "aspect-[4/3]")}>
-          <Image
-            src={project.image}
-            alt={project.imageAlt}
-            fill
-            priority={priority}
-            unoptimized={isSvg}
-            sizes={emphasis ? "(min-width: 1024px) 58vw, 100vw" : "(min-width: 1024px) 40vw, 100vw"}
-            className="object-cover transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.03]"
-          />
+          <ImageReveal>
+            <Image
+              src={project.image}
+              alt={project.imageAlt}
+              fill
+              priority={priority}
+              unoptimized={isSvg}
+              sizes={emphasis ? "(min-width: 1024px) 58vw, 100vw" : "(min-width: 1024px) 40vw, 100vw"}
+              className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
+            />
+          </ImageReveal>
         </div>
         <div className="absolute left-4 top-4 flex gap-2">
           {project.placeholder ? <Badge tone="lime">Placeholder</Badge> : null}
         </div>
-        <span className="absolute bottom-4 right-4 flex size-11 items-center justify-center bg-canvas text-bone opacity-0 transition-[opacity,transform] duration-300 ease-[var(--ease-out-expo)] group-hover:translate-y-0 group-hover:opacity-100 sm:translate-y-2">
+        <span className="absolute bottom-4 right-4 flex size-11 items-center justify-center bg-lime text-ink opacity-0 transition-[opacity,transform] duration-500 ease-[var(--ease-out-expo)] group-hover:translate-y-0 group-hover:opacity-100 sm:translate-y-3">
           <ArrowUpRight className="size-5" />
         </span>
       </Link>
@@ -49,7 +52,7 @@ export function ProjectCard({ project, className, emphasis = false, priority = f
           <p className="micro-mono text-mute">{project.client}</p>
         </div>
         <h3 className={cn("mt-3 font-semibold tracking-[-0.02em]", emphasis ? "text-h3" : "text-h4")}>
-          <Link href={href} className="hover:underline underline-offset-4 decoration-1">
+          <Link href={href} className="decoration-1 underline-offset-4 hover:underline">
             {project.title}
           </Link>
         </h3>

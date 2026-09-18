@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Container } from "@/components/ui/container";
 import { SectionLabel } from "@/components/ui/section-label";
+import { Reveal } from "@/components/marketing/reveal";
+import { RevealLines } from "@/components/motion/reveal-text";
 import { cn } from "@/lib/utils";
 
 interface PageHeroProps {
@@ -23,22 +25,27 @@ export function PageHero({ label, headline, intro, aside, tone = "bone", classNa
         className,
       )}
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-grid opacity-50 [mask-image:linear-gradient(to_bottom,black,transparent_80%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-grid [mask-image:linear-gradient(to_bottom,black,transparent_80%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 glow-lime" />
       <Container className="relative pb-16 sm:pb-20">
-        <SectionLabel as="p" className="mb-8">
-          {label}
-        </SectionLabel>
+        <Reveal immediate delay={100} distance={12}>
+          <SectionLabel as="p" className="mb-8">
+            {label}
+          </SectionLabel>
+        </Reveal>
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
-          <h1 className="text-display lg:col-span-8">
-            {headline.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </h1>
-          {intro ? <p className="max-w-[44ch] text-lead text-current/75 lg:col-span-4">{intro}</p> : null}
+          <RevealLines as="h1" immediate delay={0.2} lines={headline} className="text-display lg:col-span-8" />
+          {intro ? (
+            <Reveal immediate delay={650} distance={16} className="max-w-[44ch] text-lead text-current/75 lg:col-span-4">
+              <p>{intro}</p>
+            </Reveal>
+          ) : null}
         </div>
-        {aside ? <div className="mt-12 border-t hairline pt-6">{aside}</div> : null}
+        {aside ? (
+          <Reveal immediate delay={800} distance={12} className="mt-12 border-t hairline pt-6">
+            {aside}
+          </Reveal>
+        ) : null}
       </Container>
     </section>
   );

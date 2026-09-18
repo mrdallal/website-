@@ -1,4 +1,5 @@
 import * as React from "react";
+import { RevealWords } from "@/components/motion/reveal-text";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
@@ -8,6 +9,8 @@ interface SectionHeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
   lead?: React.ReactNode;
   leadClassName?: string;
   align?: "left" | "center";
+  /** Disable the word-by-word reveal */
+  static?: boolean;
 }
 
 const sizes = {
@@ -17,8 +20,9 @@ const sizes = {
 };
 
 /**
- * Heading + optional lead. Width limits live on the heading itself so the
- * `ch` unit resolves against the heading's font size, not the body size.
+ * Heading + optional lead. String headings get a masked word-by-word reveal
+ * when scrolled into view. Width limits live on the heading itself so the
+ * `ch` unit resolves against the heading's font size.
  */
 export function SectionHeading({
   as: Comp = "h2",
@@ -26,14 +30,17 @@ export function SectionHeading({
   lead,
   leadClassName,
   align = "left",
+  static: isStatic = false,
   className,
   children,
   ...props
 }: SectionHeadingProps) {
+  const content = typeof children === "string" && !isStatic ? <RevealWords text={children} /> : children;
+
   return (
     <div className={cn(align === "center" && "flex flex-col items-center text-center", lead && "space-y-6")}>
       <Comp className={cn(sizes[size], "font-semibold", className)} {...props}>
-        {children}
+        {content}
       </Comp>
       {lead ? <p className={cn("max-w-[52ch] text-lead text-current/75", leadClassName)}>{lead}</p> : null}
     </div>
