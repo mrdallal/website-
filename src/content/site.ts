@@ -1,6 +1,20 @@
 import type { CallToAction, NavItem } from "@/types/content";
 
 /**
+ * Public site origin, in priority order:
+ *  1. NEXT_PUBLIC_SITE_URL (explicit, ignores empty strings)
+ *  2. Vercel's production / deployment host
+ *  3. localhost for development
+ */
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (explicit) return explicit.replace(/\/+$/, "");
+  const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim() || process.env.VERCEL_URL?.trim();
+  if (vercelHost) return `https://${vercelHost.replace(/^https?:\/\//, "")}`;
+  return "http://localhost:3000";
+}
+
+/**
  * Global site settings and navigation.
  * Values marked PLACEHOLDER should be replaced before launch.
  */
@@ -10,7 +24,7 @@ export const siteConfig = {
   tagline: "Digital systems that turn attention into business.",
   description:
     "TECHSIDES designs and builds websites, lead capture, automation and AI systems that turn attention into customers, then connects them into one business system.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: resolveSiteUrl(),
   locale: "en_US",
   // PLACEHOLDER: replace with the real inbox before launch.
   contactEmail: "hello@techsides.example",
