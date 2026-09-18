@@ -50,7 +50,7 @@ export function WorkGrid({ projects, withHeader = true, tone = "white" }: WorkGr
         <div className={cn("grid gap-x-8 gap-y-14 lg:grid-cols-12", withHeader && "mt-14")}>
           {projects.map((project, i) => (
             <Reveal key={project.slug} delay={(i % 3) * 90} className={cn(spans[project.size], i === 0 && "lg:row-span-2")}>
-              <ProjectCard project={project} emphasis={project.size === "large"} priority={i === 0} />
+              <ProjectCard project={project} emphasis={project.size === "large"} priority={i < 2} />
             </Reveal>
           ))}
         </div>
